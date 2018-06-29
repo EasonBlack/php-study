@@ -3,9 +3,9 @@
         <div class='title-wrapper'>
             <div>{{title}}</div>
             <div class='button-wrapper'>
-                <button class='btn btn-blue' @click='newDisplay' v-if='type=="list"'>New</button>
+                <button class='btn btn-primary' @click='newDisplay' v-if='type=="list"'>New</button>
          
-                <button class='btn btn-blue' @click='back' v-if='type=="new"'>Back</button>
+                <button class='btn btn-primary' @click='back' v-if='type=="new"'>Back</button>
               
             </div>
         </div>      

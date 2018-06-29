@@ -1,19 +1,20 @@
 <template>
     <div class='content-wrapper'>
-        <div-header :title='"Article "' :type='"new"' />
+        <div-header :title='"Article Detail"' :type='"new"' />
         <div class='article'>
             <div class='name mb-4'>
-                <template v-if='detail.name'>
+                <template v-if='!isEditable'>
                      {{detail.name}}
                 </template>
-                <input v-if='!detail.name' v-model='newName' class="form-control" placeholder='Name'/>
+                <input v-if='isEditable' v-model='detail.name' class="form-control" placeholder='Name'/>
             </div>
             <div class='content mb-4'>
-                <pre v-if='detail.name' v-html="detail.content"></pre>
-                <textarea v-if='!detail.content' class="form-control" v-model='newContent' placeholder='Content' />
+                <pre v-if='!isEditable' v-html="detail.content"></pre>
+                <textarea v-if='isEditable' class="form-control" v-model='detail.content' placeholder='Content' />
             </div>
             <div>
-                <button class='btn btn-primary' @click='postArticle'>Save</button>
+                <button class='btn btn-primary' @click='saveArticle'  v-if='isEditable'>Save</button>
+                <button class='btn btn-primary' @click='showEditable' v-if='!isEditable'>Edit</button>
             </div>
         </div>
     </div>
@@ -25,34 +26,57 @@
         components: {divHeader},
         data() {
             return {
-                id: '',
-                newName: '',
-                newContent: '',
                 detail: {
+                    id: '',
                     name: '',
                     content: ''
-                }
+                },
+                isEditable: false
             }
         },
         created() {
-            this.id = this.$route.params.id;
-            if(this.id) {
-                this.getArticleById(this.id);
-            } 
+            this.detail.id = parseInt(this.$route.params.id);
+            if(this.detail.id) {
+                this.getArticleById(this.detail.id);
+            } else {
+                this.isEditable = true;
+            }
 
         },
         methods: {
             async getArticleById(id) {
                 let result = await axios.get(`http://localhost:7777/article/${id}`);
-                this.detail = result.data[0];
+                let _detail = result.data[0];
+                this.detail.name = _detail.name;
+                this.detail.content = _detail.content;
             },
+
+            saveArticle() {
+                if(this.detail.id) {
+                    this.putArticle();
+                } else {
+                    this.postArticle();
+                }
+            },
+
             postArticle() {
-                axios.post(`http://localhost:7777/article`, {name: this.newName, content: this.newContent})
+                axios.post(`http://localhost:7777/article`, {name: this.detail.name, content: this.detail.content})
                 .then(result=>{
-                    console.log(result);
                     this.$router.push('/list');
                 })
+            },
+
+            putArticle() {
+                axios.put(`http://localhost:7777/article/${this.id}`, {name: this.detail.name, content: this.detail.content})
+                .then(result=>{
+                    this.$router.push('/list');
+                })
+            },
+
+            showEditable() {
+                this.isEditable = true;
             }
+
         }
     }
 </script>
