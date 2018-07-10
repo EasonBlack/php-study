@@ -29,7 +29,7 @@
     $app->post('/key', function ($request, $response, $args) use ($app) {	
         $form = $request->getParsedBody();
         $dbconn = Core::getInstance();
-        $date = date("Y-m-d h:i:s");
+        $date = date("Y-m-d H:i:s");
         $sql = "insert into MY_KEY (NAME, TYPE)"
         . " VALUES('$form[name]', '$form[type]')";
         $dbconn->dbh->query($sql);
@@ -40,7 +40,7 @@
         $id = $args['id'];
         $form = $request->getParsedBody();
         $dbconn = Core::getInstance();
-        $date = date("Y-m-d h:i:s");
+        $date = date("Y-m-d H:i:s");
         $sql = "update MY_KEY set NAME='$form[name]' where id='$id'";
         $dbconn->dbh->query($sql);
         echo true;

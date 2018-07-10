@@ -2,7 +2,9 @@
 header("Content-Type: application/json; charset=UTF-8");
 
 $app->get('/a', function () use ($app) {
-    echo "Hello";
+    
+    $date = date("Y-m-d H:i:s", time());
+    echo $date;
 });	
 
 // Get current 

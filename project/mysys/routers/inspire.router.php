@@ -12,10 +12,19 @@
         }
     });
 
-    $app->get('/inspire/{id}', function ($request, $response, $args) use ($app) {	
-        $id = $args['id'];
+    // $app->get('/inspire/{id}', function ($request, $response, $args) use ($app) {	
+    //     $id = $args['id'];
+    //     $dbconn = Core::getInstance();
+    //     $stmt =  $dbconn->dbh->query("select * from MY_INSPIRE where ID='$id'");
+    //     $stmt->execute();
+    //     $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+    //     echo json_encode($results);
+    // });
+
+    $app->get('/inspire/{key}', function ($request, $response, $args) use ($app) {	
+        $key = $args['key'];
         $dbconn = Core::getInstance();
-        $stmt =  $dbconn->dbh->query("select * from MY_INSPIRE where ID='$id'");
+        $stmt =  $dbconn->dbh->query("select * from my_inspire where find_in_set('$key',`KEYS`)");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_OBJ);
         echo json_encode($results);
@@ -24,20 +33,12 @@
     $app->post('/inspire', function ($request, $response, $args) use ($app) {	
         $form = $request->getParsedBody();
         $dbconn = Core::getInstance();
-        $date = date("Y-m-d h:i:s");
-        $sql = "insert into MY_INSPIRE (CONTENT, KEYS, UPDATE_TIME)"
-        . " VALUES('$form[content]', '$form[keys]' ,'$date')";
+        $date = date("Y-m-d H:i:s");
+        $sql = "insert into MY_INSPIRE (CONTENT, `KEYS`, UPDATE_TIME, STATUS)"
+        . " VALUES('$form[content]', '$form[keys]' ,'$date', 'WAIT')";
         $dbconn->dbh->query($sql);
         echo true;
     });
     
-    $app->put('/inspire/{id}', function ($request, $response, $args) use ($app) {	
-        $id = $args['id'];
-        $form = $request->getParsedBody();
-        $dbconn = Core::getInstance();
-        $date = date("Y-m-d h:i:s");
-        $sql = "update MY_INSPIRE set CONTENT='$form[content]',KEYS='$form[keys]', UPDATE_TIME='$date' where id='$id'";
-        $dbconn->dbh->query($sql);
-        echo true;
-    });
+    
 ?>
