@@ -3,7 +3,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $app->get('/a', function () use ($app) {
     
-    $date = date("Y-m-d H:i:s", time());
+    $date = date("Y-m-d H:i:s");
     echo $date;
 });	
 
