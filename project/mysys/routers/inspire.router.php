@@ -12,15 +12,6 @@
         }
     });
 
-    // $app->get('/inspire/{id}', function ($request, $response, $args) use ($app) {	
-    //     $id = $args['id'];
-    //     $dbconn = Core::getInstance();
-    //     $stmt =  $dbconn->dbh->query("select * from MY_INSPIRE where ID='$id'");
-    //     $stmt->execute();
-    //     $results = $stmt->fetchAll(PDO::FETCH_OBJ);
-    //     echo json_encode($results);
-    // });
-
     $app->get('/inspire/{key}', function ($request, $response, $args) use ($app) {	
         $key = $args['key'];
         $dbconn = Core::getInstance();

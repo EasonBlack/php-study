@@ -36,6 +36,23 @@
         echo true;
     });
 
+    $app->post('/keylist', function ($request, $response, $args) use ($app) {	
+        $form = $request->getParsedBody();
+        $dbconn = Core::getInstance();
+        $date = date("Y-m-d H:i:s");
+        $sql = "insert into MY_KEY (NAME, TYPE) VALUES";
+
+        $items = $form['items'];
+        for($i = 0; $i < count($items); ++$i)  {
+            $sql .=  " ('$items[$i]', '$form[type]')";
+            if($i!=count($items) - 1) {
+                $sql .= ',';
+            } 
+        }
+        $dbconn->dbh->query($sql);
+        echo $sql;
+    });
+
     $app->put('/key/{id}', function ($request, $response, $args) use ($app) {	
         $id = $args['id'];
         $form = $request->getParsedBody();
