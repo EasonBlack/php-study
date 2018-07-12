@@ -1,4 +1,45 @@
 <?php
+
+
+    $app->get('/collection', function ($request, $response, $args) use ($app) {	
+        try {
+            $query =  $request->getQueryParams();
+            $type = $query['type'];
+            $table = '';
+            if($type=='it') {
+                $table='COLLECTION_IT';
+            } else if($type=='lit'){
+                $table='COLLECTION_LIT';
+            }
+            $dbconn = Core::getInstance();
+            $sql = "select * from ".  $table . " where 1=1 ";
+            $category = $query['category'];
+            $key=$query['key'];
+            if($category) {
+                $sql .= " and category='$category'";
+            }
+         
+            if($key) {
+                $sql .= ' and ( ';
+                $key_array = explode(',', $key);
+                for($i = 0; $i < count($key_array); ++$i)  {
+                    $sql .=  " find_in_set('$key_array[$i]' , `KEYS`) ";
+                    if($i!=count($key_array) - 1) {
+                        $sql .= ' or ';
+                    } 
+                }
+                $sql .= ' ) ';
+            }
+            
+            $stmt =  $dbconn->dbh->query($sql);       
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($results);
+        }  catch(PDOException $e) {
+            echo  '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    });
+
     $app->get('/collection/it/{category}', function ($request, $response, $args) use ($app) {	
         try {
             $category = $args['category'];
