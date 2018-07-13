@@ -12,25 +12,33 @@
                 $table='COLLECTION_LIT';
             }
             $dbconn = Core::getInstance();
-            $sql = "select * from ".  $table . " where 1=1 ";
+            $sql = "select t.*, GROUP_CONCAT(k.NAME) as KEYS_NAME "
+            . " from MY_KEY k "
+            . " join ".$table." t  "
+            . " ON FIND_IN_SET(k.ID, t.KEYS) > 0 " 
+            . " WHERE 1=1 ";
+            //$sql = "select * from ".  $table . " where 1=1 ";
+            
             $category = $query['category'];
-            $key=$query['key'];
             if($category) {
-                $sql .= " and category='$category'";
+                $sql .= " and t.CATEGORY='$category'";
             }
-         
+
+            $key=$query['key'];
             if($key) {
                 $sql .= ' and ( ';
                 $key_array = explode(',', $key);
                 for($i = 0; $i < count($key_array); ++$i)  {
-                    $sql .=  " find_in_set('$key_array[$i]' , `KEYS`) ";
+                    $sql .=  " find_in_set('$key_array[$i]' , t.KEYS) ";
                     if($i!=count($key_array) - 1) {
                         $sql .= ' or ';
                     } 
                 }
                 $sql .= ' ) ';
             }
-            
+
+            $sql .= 'GROUP BY t.ID';
+            //echo $sql;
             $stmt =  $dbconn->dbh->query($sql);       
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_OBJ);
