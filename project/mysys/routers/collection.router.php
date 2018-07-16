@@ -128,4 +128,23 @@
         
         echo true;
     });
+
+
+    $app->put('/collection/{id}', function ($request, $response, $args) use ($app) {	
+        $id = $args['id'];
+        $form = $request->getParsedBody();
+        $dbconn = Core::getInstance();
+        $date = date("Y-m-d H:i:s");
+        $_table = $form['table'];
+        $table = '';
+        if($_table=='it') {
+            $table='COLLECTION_IT';
+        } else if($_table=='lit'){
+            $table='COLLECTION_LIT';
+        }
+        $sql = 'update ' .$table. " set CONTENT= '$form[content]', `KEYS`='$form[keys]', UPDATE_TIME='$date' where ID='$id'";
+        $dbconn->dbh->query($sql);
+        
+        echo true;
+    });
 ?>
