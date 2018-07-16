@@ -37,6 +37,11 @@
                 $sql .= ' ) ';
             }
 
+            $search = $query['search'];
+            if($search) {
+                $sql .= " and t.CONTENT like '%$search%'";
+            }
+
             $sql .= 'GROUP BY t.ID';
             //echo $sql;
             $stmt =  $dbconn->dbh->query($sql);       
