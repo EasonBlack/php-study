@@ -31,7 +31,7 @@
                 for($i = 0; $i < count($key_array); ++$i)  {
                     $sql .=  " find_in_set('$key_array[$i]' , t.KEYS) ";
                     if($i!=count($key_array) - 1) {
-                        $sql .= ' or ';
+                        $sql .= ' and ';
                     } 
                 }
                 $sql .= ' ) ';
