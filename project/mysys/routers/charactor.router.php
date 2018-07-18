@@ -19,8 +19,20 @@
         $id = $args['id'];
         $dbconn = Core::getInstance();
       
-        $sql = "insert into CHARACTOR (BOOK_ID,NAME,DESC,RELATIONSHIP)"
+        $sql = "insert into CHARACTOR (BOOK_ID,NAME,`DESC`,RELATIONSHIP)"
         . " VALUES('$id', '$form[name]', '$form[desc]' ,'$form[relationship]')";
+        //return $sql;
+        $dbconn->dbh->query($sql);
+        
+        echo true;
+    });
+
+
+    $app->put('/book/{id}/charactor', function ($request, $response, $args) use ($app) {	
+        $form = $request->getParsedBody();
+        $id = $args['id'];
+        $dbconn = Core::getInstance();
+        $sql = "update CHARACTOR set NAME='$form[name]',`DESC`='$$form[name]', RELATIONSHIP='$form[relationship]' where id='$id'";
         //return $sql;
         $dbconn->dbh->query($sql);
         
