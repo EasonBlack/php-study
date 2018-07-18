@@ -1,5 +1,5 @@
 <?php
-    $app->get('/boko/{id}/charactor', function ($request, $response, $args) use ($app) {	
+    $app->get('/book/{id}/charactor', function ($request, $response, $args) use ($app) {	
         try {
             $id = $args['id'];
             $dbconn = Core::getInstance();
@@ -11,5 +11,19 @@
         }  catch(PDOException $e) {
             echo  '{"error":{"text":'. $e->getMessage() .'}}';
         }  
+    });
+
+
+    $app->post('/book/{id}/charactor', function ($request, $response, $args) use ($app) {	
+        $form = $request->getParsedBody();
+        $id = $args['id'];
+        $dbconn = Core::getInstance();
+      
+        $sql = "insert into CHARACTOR (BOOK_ID,NAME,DESC,RELATIONSHIP)"
+        . " VALUES('$id', '$form[name]', '$form[desc]' ,'$form[relationship]')";
+        //return $sql;
+        $dbconn->dbh->query($sql);
+        
+        echo true;
     });
 ?>
