@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+</head>
+<body>
+    <div>
+        <button class='btn btn-primary' id='btnToken'>GetToken</button>
+        <button class='btn btn-primary' id='btnLogin'>Login</button>
+    </div>
+    <script src='../../vendor-js/axios.min.js'></script>
+    <script>
+        let _token = '';
+        let btnToken = document.getElementById("btnToken");
+        let btnLogin = document.getElementById("btnLogin");
+
+        btnToken.addEventListener('click', ()=>{  
+            axios.get(`http://localhost:3000/slim/simple-jwt/index.php/g`)
+            .then(res=>{
+                console.log(res);
+                _token = res.data;
+            })
+        })
+        btnLogin.addEventListener('click', ()=>{  
+            axios.get(`http://localhost:3000/slim/simple-jwt/index.php/t`,  {
+                headers: {
+                    'Authorization': 'Bearer ' + _token
+                }
+            })
+            .then(res=>{
+                console.log(res);
+            })
+        })
+    </script>
+</body>
+</html>
