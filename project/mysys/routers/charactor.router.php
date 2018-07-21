@@ -34,7 +34,7 @@
             $sql = "select * from CHARACTOR_CONTENT WHERE ID='$id'";
             $stmt =  $dbconn->dbh->query($sql);       
             $stmt->execute();
-            $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $results = $stmt->fetch(PDO::FETCH_OBJ);
             echo json_encode($results);
         }  catch(PDOException $e) {
             echo  '{"error":{"text":'. $e->getMessage() .'}}';
@@ -95,7 +95,7 @@
             $dbconn = Core::getInstance();
 
             $sql = "update CHARACTOR_CONTENT " 
-            . " set NAME='$form[name]',`CONTENT`='$$form[content]'" 
+            . " set NAME='$form[name]',`CONTENT`='$form[content]'" 
             . " where id='$id'";
 
             $stmt =  $dbconn->dbh->query($sql);       
