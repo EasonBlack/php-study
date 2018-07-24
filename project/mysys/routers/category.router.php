@@ -29,8 +29,8 @@
     $app->post('/category', function ($request, $response, $args) use ($app) {	
         $form = $request->getParsedBody();
         $dbconn = Core::getInstance();
-        $sql = "insert into MY_KEY (NAME, TYPE)"
-        . " VALUES('$form[name]', '$form[type]')";
+        $sql = "insert into MY_CATEGORY (NAME, TYPE, PARENT_ID)"
+        . " VALUES('$form[name]', '$form[type]', '$form[parentId]')";
         $dbconn->dbh->query($sql);
         echo true;
     });
