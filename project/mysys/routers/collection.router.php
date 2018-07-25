@@ -10,9 +10,23 @@
             . " from MY_COLLECTION t "
             . " WHERE 1=1 ";
             
-            $category = $query['category'];
+            // $category = $query['category'];
+            // if($category) {
+            //     $sql .= " and t.CATEGORY='$category'";
+            // }
+
+
+            $category=$query['category'];
             if($category) {
-                $sql .= " and t.CATEGORY='$category'";
+                $sql .= ' and ( ';
+                $cat_array = explode(',', $category);
+                for($i = 0; $i < count($cat_array); ++$i)  {
+                    $sql .=  " '$cat_array[$i]'= t.CATEGORY ";
+                    if($i!=count($cat_array) - 1) {
+                        $sql .= ' or ';
+                    } 
+                }
+                $sql .= ' ) ';
             }
 
             $search = $query['search'];
