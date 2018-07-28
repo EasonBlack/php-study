@@ -79,7 +79,7 @@
         $form = $request->getParsedBody();
         $dbconn = Core::getInstance();
         $date = date("Y-m-d H:i:s");
-        $sql = "update MY_COLLECTION set CONTENT= '$form[content]', UPDATE_TIME='$date' where ID='$id'";
+        $sql = "update MY_COLLECTION set CONTENT= '$form[content]' where ID='$id'";
         $dbconn->dbh->query($sql);
         
         echo $sql ;
