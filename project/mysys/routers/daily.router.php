@@ -1,10 +1,11 @@
 <?php
-    
+
     $app->get('/daily', function () use ($app) {	
         try {
             $dbconn = Core::getInstance();
-            $stmt =  $dbconn->dbh->query("select * from DAILY_NOTE order by CREATE_TIME desc");
-            
+            $sql =  "select  DATE_FORMAT(CREATE_TIME, '%Y-%m-%d') as CREATE_TIME,  CONTENT,  ID " 
+            . " from DAILY_NOTE order by CREATE_TIME desc";
+            $stmt =  $dbconn->dbh->query($sql);
             $stmt->execute();
             $res = $stmt->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($res);
@@ -21,6 +22,7 @@
         $sql = "insert into DAILY_NOTE (CONTENT, CREATE_TIME)"
         . " VALUES('$form[content]', '$date')";
         $dbconn->dbh->query($sql);
-        echo $dbconn->dbh->lastInsertId();
+        echo $sql;
+        // echo $dbconn->dbh->lastInsertId();
     });
 ?>
