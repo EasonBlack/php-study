@@ -22,10 +22,10 @@ require './configs/'.strtolower(APPLICATION_ENV).'.config.php';
 $app = new Slim\App;
 $key = 'easontest';
 
-$app->add(new Tuupola\Middleware\JwtAuthentication([
-    "path" => "/current",
-    "secret" => $key
-]));
+// $app->add(new Tuupola\Middleware\JwtAuthentication([
+//     "path" => "/current",
+//     "secret" => $key
+// ]));
 
 $routers = glob('./routers/*.router.php');
 foreach ($routers as $router) {

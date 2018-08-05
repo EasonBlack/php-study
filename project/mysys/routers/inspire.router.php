@@ -67,9 +67,9 @@
         $dbconn = Core::getInstance();
         $date = date("Y-m-d H:i:s");
        
-        $sql = "update MY_INSPIRE set CONTENT= '$form[content]', `KEYS`='$form[keys]'  where ID='$id'";
+        $sql = "update MY_INSPIRE set CONTENT= '$form[content]', `KEYS`='$form[keys]' where ID='$id'";
         $dbconn->dbh->query($sql);
-        echo true;
+        echo $sql;
     });
     
 ?>
