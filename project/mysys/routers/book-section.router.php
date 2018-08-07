@@ -59,13 +59,12 @@
 
 
     $app->put('/book-content/{id}', function ($request, $response, $args) use ($app) {	
-       
+        $form = $request->getParsedBody();
         $id = $args['id'];
         $dbconn = Core::getInstance();
         $sql = "update BOOK_CONTENT set CONTENT='$form[content]' where ID='$id'";
-        $stmt =  $dbconn->dbh->query(sql);
         
-        $stmt =  $dbconn->dbh->query($sql);  
+        $dbconn->dbh->query($sql);  
 
         echo true;
     });
