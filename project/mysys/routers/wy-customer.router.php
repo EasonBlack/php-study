@@ -59,8 +59,8 @@ $app->get('/wy-order/month/{yearmonth}', function ($request, $response, $args) u
 $app->post('/wy-order', function ($request, $response, $args) use ($app) {	
     $form = $request->getParsedBody();
     $dbconn = Core::getInstance();
-    $sql = "insert into WY_ORDER (DATE, TIME, CUSTOMER_ID)"
-    . " VALUES('$form[date]', '$form[time]', $form[customerId])";
+    $sql = "insert into WY_ORDER (DATE, TIME, CUSTOMER)"
+    . " VALUES('$form[date]', '$form[time]', $form[customer])";
     $dbconn->dbh->query($sql);
     echo true; 
 });
@@ -69,10 +69,17 @@ $app->put('/wy-order/{id}', function ($request, $response, $args) use ($app) {
     $id = $args['id'];
     $form = $request->getParsedBody();
     $dbconn = Core::getInstance();
-    $sql = "update WY_ORDER set DATE='$form[date]',`TIME`='$$form[time]', CUSTOMER_ID='$form[customerId]' where ID='$id'";
+    $sql = "update WY_ORDER set DATE='$form[date]',`TIME`='$$form[time]', CUSTOMER='$form[customer]' where ID='$id'";
     $dbconn->dbh->query($sql);
     echo true; 
 });
 
+$app->delete('/wy-order/{id}', function ($request, $response, $args) use ($app) {	
+  $form = $request->getParsedBody();
+  $dbconn = Core::getInstance();
+  $sql = "delete WY_ORDER where ID='$id'";
+  $dbconn->dbh->query($sql);
+  echo true; 
+});
 
 ?>
